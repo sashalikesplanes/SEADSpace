@@ -1,6 +1,8 @@
 import numpy as np
+from SolarArrays import get_orbit_times
 
 solar_param_dict = {
+    "orbit_altitude": 800000,  # [m] orbital altitude above mars
     "array_power": {
         # [W] power required by spacecraft in nominal
         "power_required_daylight": 800,
