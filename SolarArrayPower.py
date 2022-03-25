@@ -30,8 +30,11 @@ solar_param_dict = {
 
 def get_path_efficiency():
     n_array_regulator = 0.95
-    path_efficiency = n_array_regulator
-    return path_efficiency
+    n_pdcu_daylight = 0.96 * 0.95 * 0.95
+    n_pdcu_eclipse = 0.96 * 0.95
+    path_efficiency_daylight = n_array_regulator + n_pdcu_daylight
+    path_efficiency_eclipse = n_pdcu_eclipse
+    return path_efficiency_daylight
 
 def get_area_solar(params):
     t_daylight, t_eclipse = get_orbit_times(orbit_altitude)
