@@ -1,10 +1,9 @@
 import numpy as np
 
 R_mars = 3389.5e3
-#R_mars = 6371e3  # m #radius of earth
 G = 6.673e-11
 M_mars = 6.39e23  # kg
-#M_mars = 5.972e24 #mass of earth
+
 mu_mars=G*M_mars
 J2=1960.45e-6
 rho=(2*np.pi)/(31536000*1.88) #mean motion of mars around sun
