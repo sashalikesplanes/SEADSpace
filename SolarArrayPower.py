@@ -20,3 +20,14 @@ def get_lifetime_degradation(lifetime, degradation_per_year):
     # Computes total life time degradation factor
     # Lifetime in years
     return (1 - degradation_per_year) ** lifetime
+
+
+def get_power_per_area_EOL(angle_of_incidence, power_per_area_0, inherent_degradation, lifetime_degradation):
+    # Compute power per square meter at eng of life
+    # angle_of_incidece of solar radiation in degrees!
+    # inherent_degradation factor
+    # lifetime_degradation factor
+    # power_per_area nominal
+    power_per_area_BOL = power_per_area_0 * inherent_degradation * \
+        np.cos(angle_of_incidence / 180 * np.pi)
+    return power_per_area_BOL * lifetime_degradation
