@@ -8,3 +8,9 @@ M_mars = 6.39e23  # kg
 
 ##FIND ORBITAL PERIOD FOR CIRCULAR ORBIT##
 T = np.sqrt((4 * np.pi**2 * R_orbit**3)/(G*M_mars))
+
+
+def get_orbit_times(altitude):
+
+    t_daylight, t_eclipse = 0, 0
+    return t_daylight, t_eclipse

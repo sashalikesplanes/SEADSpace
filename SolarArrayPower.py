@@ -6,8 +6,6 @@ solar_param_dict = {
         "power_required_daylight": 800,
         # [W] power required by spacecraft in eclipse
         "power_required_eclipse": 400,
-        "t_daylight": 60,  # [s]
-        "t_eclipse": 10,  # [s]
         "path_efficiency_daylight": 0.8,  # [-] total path efficiency daylight
         # [-] total path efficiency eclipse (includes through battery)
         "path_efficiency_eclipse": 0.6,
@@ -26,11 +24,13 @@ solar_param_dict = {
         # [-] factor to account for the inherent degradation of solar panel
         "inherent_degradation": 0.9,
     }
-
 }
 
 
 def get_area_solar(params):
+    t_daylight, t_eclipse = get_orbit_times(orbit_altitude)
+    params["t_daylight"] = t_daylight
+    params['t_eclipse'] = t_eclipse
     power_solar = get_array_power(**params["array_power"])
     lifetime_degradation = get_lifetime_degradation(
         **params["lifetime_degradation"])
