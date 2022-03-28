@@ -35,15 +35,18 @@ solar_param_dict = {
     }
 }
 
+
 def get_path_efficiency():
     n_array_regulator = 0.95
     n_pdcu_daylight = 0.95 * 0.96
     n_pdcu_eclipse = 0.95
     n_pcr_daylight = 0.912
     n_pcr_eclipse = 0.893
-    path_efficiency_daylight = n_array_regulator * n_pdcu_daylight * n_pcr_daylight 
+    n_battery = 0.9
+    path_efficiency_daylight = n_array_regulator * n_pdcu_daylight * n_pcr_daylight
     path_efficiency_eclipse = n_pdcu_eclipse * n_pcr_eclipse
     return path_efficiency_daylight, path_efficiency_eclipse
+
 
 def get_battery_capacity(power_eclipse, t_eclipse, depth_of_discharge, N_batteries, efficiency):
     # Get the battery capacity in Watt hours
@@ -52,6 +55,9 @@ def get_battery_capacity(power_eclipse, t_eclipse, depth_of_discharge, N_batteri
 
 def get_area_solar(params):
     t_daylight, t_eclipse = get_orbit_times(params['orbit_altitude'])
+    path_efficiency_daylight, path_efficiency_eclipse = get_path_efficiency()
+    params['array_power']['path_efficiency_daylight'] = path_efficiency_daylight
+    params['array_power']['path_efficiency_eclipse'] = path_efficiency_eclipse
     params["array_power"]["t_daylight"] = t_daylight
     params["array_power"]['t_eclipse'] = t_eclipse
     power_solar = get_array_power(**params["array_power"])
