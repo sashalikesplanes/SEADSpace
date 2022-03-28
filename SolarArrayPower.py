@@ -1,5 +1,5 @@
 import numpy as np
-from SolarArrays import get_orbit_times
+from OrbitalCalculation import get_orbit_times
 
 solar_param_dict = {
     "orbit_altitude": 800000,  # [m] orbital altitude above mars
@@ -7,7 +7,7 @@ solar_param_dict = {
         # [W] power required by spacecraft in nominal
         "power_required_daylight": 800,
         # [W] power required by spacecraft in eclipse
-        "power_required_eclipse": 400,
+        "power_required_eclipse": 110,
         "path_efficiency_daylight": 0.8,  # [-] total path efficiency daylight
         # [-] total path efficiency eclipse (includes through battery)
         "path_efficiency_eclipse": 0.6,
@@ -25,6 +25,13 @@ solar_param_dict = {
         "solar_radiation_per_area": 1000,
         # [-] factor to account for the inherent degradation of solar panel
         "inherent_degradation": 0.9,
+    },
+    "battery_capacity": {
+        # [-] fraction of total capacity discharged per cycle
+        "depth_of_discharge": 0.2,
+        "N_batteries": 3,  # [-] number of batteries used
+        # [-] efficiency factor for transmission between battery and load
+        "efficiency": 0.9,
     }
 }
 
@@ -38,10 +45,15 @@ def get_path_efficiency():
     path_efficiency_eclipse = n_pdcu_eclipse * n_pcr_eclipse
     return path_efficiency_daylight, path_efficiency_eclipse
 
+def get_battery_capacity(power_eclipse, t_eclipse, depth_of_discharge, N_batteries, efficiency):
+    # Get the battery capacity in Watt hours
+    return power_eclipse * t_eclipse / (depth_of_discharge * N_batteries * efficiency) / 3600
+
+
 def get_area_solar(params):
-    t_daylight, t_eclipse = get_orbit_times(orbit_altitude)
-    params["t_daylight"] = t_daylight
-    params['t_eclipse'] = t_eclipse
+    t_daylight, t_eclipse = get_orbit_times(params['orbit_altitude'])
+    params["array_power"]["t_daylight"] = t_daylight
+    params["array_power"]['t_eclipse'] = t_eclipse
     power_solar = get_array_power(**params["array_power"])
     lifetime_degradation = get_lifetime_degradation(
         **params["lifetime_degradation"])
@@ -84,4 +96,9 @@ def get_power_per_area_EOL(angle_of_incidence, solar_radiation_per_area, power_c
 
 
 if __name__ == "__main__":
-    print(get_area_solar(solar_param_dict))
+    panel_area = get_area_solar(solar_param_dict)
+    print(f"Area of solar panels needed: {panel_area} m^2")
+    # In watt hours
+    battery_capacity = get_battery_capacity(solar_param_dict['array_power']['power_required_eclipse'],
+                                            solar_param_dict['array_power']['t_eclipse'], **solar_param_dict['battery_capacity'])
+    print(f"Battery capacity needed {battery_capacity} Wh (watt hours)")
