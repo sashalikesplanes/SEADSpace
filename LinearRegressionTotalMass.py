@@ -31,10 +31,10 @@ def linregress():
 m_launch=linregress()
 print('m_launch:',m_launch)
 
-eps_mass=39.22
-m_dry=eps_mass/0.243
+
 #m_propellant=0.043*m_launch
 m_dry_frac=0.418
+m_dry=m_launch*m_dry_frac
 #percentages of mass wrt to dry mass
 payload_frac=0.346
 structure_frac=0.189
