@@ -37,8 +37,8 @@ solar_param_dict = {
 
 def get_path_efficiency():
     n_array_regulator = 0.95
-    n_pdcu_daylight = 0.95
-    n_pdcu_eclipse = 0.96 * 0.95
+    n_pdcu_daylight = 0.95 * 0.96
+    n_pdcu_eclipse = 0.95
     n_pcr_daylight = 0.912
     n_pcr_eclipse = 0.893
     path_efficiency_daylight = n_array_regulator * n_pdcu_daylight * n_pcr_daylight 
